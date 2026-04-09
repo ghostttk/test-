@@ -1,17 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>+𝐒𝐰𝐚𝐠</title>
+    <title>Meu Site</title>
     <style>
         body {
             background-color: #000;
             color: #fff;
             font-family: 'Old London', serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .swag-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>+𝕾𝖜𝖆𝖌</h1>
-    <iframe style="border-radius: 24px" src="https://untitled.stream/embed/8qYTlHjtoXs2" width="100%" height="344" allowFullScreen="" allow="picture-in-picture" frameborder="0" loading="lazy"></iframe>
+    <div class="canvas-container">
+        <canvas id="falling-numbers-canvas"></canvas>
+        <canvas id="random-letters-canvas"></canvas>
+    </div>
+    <div class="swag-text">+Swag</div>
+
+    <script>
+        // Função para desenhar números caindo
+        function drawFallingNumbers() {
+            const canvas = document.getElementById('falling-numbers-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let numbers = [];
+            for (let i = 0; i < 100; i++) {
+                numbers.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 10 + 5,
+                    speed: Math.random() * 5 + 1,
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < numbers.length; i++) {
+                    numbers[i].y += numbers[i].speed;
+                    if (numbers[i].y > canvas.height) {
+                        numbers[i].y = -numbers[i].size;
+                        numbers[i].x = Math.random() * canvas.width;
+                    }
+                    ctx.fillText(Math.floor(Math.random() * 10), numbers[i].x, numbers[i].y);
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Função para desenhar letras aleatórias
+        function drawRandomLetters() {
+            const canvas = document.getElementById('random-letters-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let letters = [];
+            for (let i = 0; i < 100; i++) {
+                letters.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 10 + 5,
+                    speed: Math.random() * 5 + 1,
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < letters.length; i++) {
+                    letters[i].y += letters[i].speed;
+                    if (letters[i].y > canvas.height) {
+                        letters[i].y = -letters[i].size;
+                        letters[i].x = Math.random() * canvas.width;
+                    }
+                    ctx.fillText(String.fromCharCode(Math.floor(Math.random() * 26) + 65), letters[i].x, letters[i].y);
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Inicializa os canvases quando a página carrega
+        window.addEventListener('load', () => {
+            drawFallingNumbers();
+            drawRandomLetters();
+        });
+    </script>
 </body>
 </html>
